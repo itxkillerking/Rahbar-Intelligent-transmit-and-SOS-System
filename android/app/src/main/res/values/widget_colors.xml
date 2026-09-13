@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="rahbar_primary">#1B4332</color>
+    <color name="rahbar_primary_light">#40916C</color>
+    <color name="rahbar_emergency_red">#D90429</color>
+    <color name="rahbar_emergency_red_light">#FFF0F2</color>
+    <color name="rahbar_widget_background">#F4F9F6</color>
+    <color name="rahbar_white">#FFFFFF</color>
+    <color name="rahbar_text_primary">#081C15</color>
+    <color name="rahbar_text_secondary">#7A8781</color>
+    <color name="rahbar_divider">#E0EAE5</color>
+</resources>

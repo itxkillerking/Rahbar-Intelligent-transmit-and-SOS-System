@@ -1,0 +1,4 @@
+enum EmergencyMode {
+  normal,
+  silentDanger,
+}

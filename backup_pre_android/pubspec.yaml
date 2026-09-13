@@ -1,0 +1,22 @@
+name: rahbar
+description: A serious safety and emergency-response Android application prototype.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.4.9
+  uuid: ^4.3.3
+  logger: ^2.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.2
+
+flutter:
+  uses-material-design: true

@@ -1,0 +1,53 @@
+name: rahbar
+description: A serious safety and emergency-response Android application prototype.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.4.9
+  uuid: ^4.3.3
+  logger: ^2.0.2
+  connectivity_plus: ^7.3.1
+  record: ^7.1.1
+  just_audio: ^0.10.6
+  camera: ^0.12.1
+  video_player: ^2.14.0
+  path_provider: ^2.1.6
+  shared_preferences: ^2.5.5
+  permission_handler: 12.0.3
+  intl: ^0.20.3
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.14.4
+  flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.8
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.2
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/app_logo.png
+    - assets/images/app_icon.png
+    - assets/images/logo-bg-free.png
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: false
+  image_path: "assets/images/app_icon.png"
+  adaptive_icon_background: "#0F172A"
+  adaptive_icon_foreground: "assets/images/app_icon.png"
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: "assets/images/splash_icon.png"
+  android: true
+  ios: false
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/images/splash_icon.png"
