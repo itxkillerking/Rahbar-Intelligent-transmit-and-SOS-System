@@ -15,7 +15,7 @@ class LocalDevSmsService(SmsService):
         return f"rahbar:dev:otp:{phone_hash}"
 
     async def send_otp(self, phone_number: str, otp: str) -> bool:
-        if settings.APP_ENV != "development" or settings.SMS_PROVIDER != "dev":
+        if settings.APP_ENV.strip() not in ["development", "staging"] or settings.SMS_PROVIDER.strip() != "dev":
             raise OtpDeliveryError("LocalDevSmsService is not permitted in current configuration.")
             
         key = self._get_dev_key(phone_number)

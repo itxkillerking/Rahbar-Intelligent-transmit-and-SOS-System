@@ -116,7 +116,7 @@ async def logout(
         # Idempotent/safe fallback
         return LogoutResponse(message="Logged out successfully")
 
-if settings.APP_ENV in ["development", "staging"] and settings.SMS_PROVIDER == "dev":
+if settings.APP_ENV.strip() in ["development", "staging"] and settings.SMS_PROVIDER.strip() == "dev":
     @router.get("/dev/otp/{phone_number}", include_in_schema=False)
     async def get_dev_otp(phone_number: str):
         """DEVELOPMENT ONLY — NEVER ENABLE IN PRODUCTION."""
