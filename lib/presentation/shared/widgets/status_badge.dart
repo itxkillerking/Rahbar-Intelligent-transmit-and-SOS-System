@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+import 'package:rahbar/domain/models/emergency_status.dart';
+import 'package:rahbar/core/theme/app_theme.dart';
+
+class StatusBadge extends StatelessWidget {
+  final EmergencyStatus status;
+
+  const StatusBadge({Key? key, required this.status}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    Color badgeColor;
+    String label;
+
+    switch (status) {
+      case EmergencyStatus.idle:
+      case EmergencyStatus.resolved:
+        badgeColor = AppTheme.safeColor;
+        label = 'SAFE';
+        break;
+      case EmergencyStatus.triggerDetected:
+      case EmergencyStatus.awaitingConfirmation:
+        badgeColor = AppTheme.warningColor;
+        label = 'PENDING';
+        break;
+      case EmergencyStatus.failed:
+        badgeColor = AppTheme.errorColor;
+        label = 'FAILED';
+        break;
+      case EmergencyStatus.emergencyActivated:
+      case EmergencyStatus.sending:
+      case EmergencyStatus.sent:
+      case EmergencyStatus.offlinePending:
+      case EmergencyStatus.synchronizing:
+        badgeColor = AppTheme.primaryColor;
+        label = 'EMERGENCY';
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: badgeColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: badgeColor.withValues(alpha: 0.5)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.shield, color: badgeColor, size: 16),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: badgeColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              letterSpacing: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

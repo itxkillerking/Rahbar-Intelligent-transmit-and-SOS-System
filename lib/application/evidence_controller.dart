@@ -9,7 +9,7 @@ import '../domain/models/emergency_status.dart';
 import '../core/logging/app_logger.dart';
 import 'evidence_repository.dart';
 import 'emergency_controller.dart';
-import '../services/widget_communication_service.dart';
+import 'package:rahbar/services/widgets/widget_communication_service.dart';
 
 final evidenceControllerProvider =
     StateNotifierProvider<EvidenceController, List<Evidence>>((ref) {

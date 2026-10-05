@@ -8,6 +8,7 @@ import 'package:rahbar/domain/models/emergency_status.dart';
 import 'package:rahbar/data/mocks/mock_synchronization_service.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late ProviderContainer container;
 
   setUp(() {
