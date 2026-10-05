@@ -5,6 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.v1.router import api_router
 from app.core.config import settings
 from app.core.logging import logger
+from app.core.config import settings
+
+logger.info(
+    "RUNTIME CONFIG: APP_ENV=%r SMS_PROVIDER=%r",
+    settings.APP_ENV,
+    settings.SMS_PROVIDER,
+)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info(f"Starting {settings.APP_NAME}")
