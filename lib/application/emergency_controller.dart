@@ -5,8 +5,8 @@ import '../domain/models/emergency.dart';
 import '../domain/models/emergency_mode.dart';
 import '../domain/models/emergency_status.dart';
 import '../domain/models/evidence.dart';
-import '../services/hardware_emergency_trigger_service.dart';
-import '../services/widget_communication_service.dart';
+import 'package:rahbar/services/hardware/hardware_emergency_trigger_service.dart';
+import 'package:rahbar/services/widgets/widget_communication_service.dart';
 import 'evidence_controller.dart';
 import 'providers.dart';
 

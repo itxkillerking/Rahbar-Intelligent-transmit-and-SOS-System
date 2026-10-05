@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'ui/shell/app_shell.dart';
-import 'ui/theme/app_theme.dart';
-import 'services/hardware_emergency_trigger_service.dart';
-import 'services/widget_communication_service.dart';
+import 'package:rahbar/app/app_shell.dart';
+import 'core/theme/app_theme.dart';
+import 'package:rahbar/services/hardware/hardware_emergency_trigger_service.dart';
+import 'package:rahbar/services/widgets/widget_communication_service.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 

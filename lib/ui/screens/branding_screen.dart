@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../shell/app_shell.dart';
-import '../theme/app_theme.dart';
+import 'package:rahbar/app/app_shell.dart';
+import 'package:rahbar/core/theme/app_theme.dart';
 
 class BrandingScreen extends StatefulWidget {
   const BrandingScreen({Key? key}) : super(key: key);

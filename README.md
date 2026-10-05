@@ -72,6 +72,28 @@ flutter build apk --release
 
 ---
 
+## 📁 Project Structure
+
+The RAHBAR project follows a strictly organized Layer-First Architecture (`Domain -> Data -> Application -> Presentation`) to maintain clean separation of concerns and robust testability.
+
+```text
+Project-RahbAR-FYP/
+├── android/            # Native Android codebase (Kotlin, XML, Services, Widgets)
+├── docs/               # Architecture, proposals, and presentations
+├── archive/            # Old prototypes and backups
+└── lib/
+    ├── main.dart       # App entry point
+    ├── app/            # App shell and routing
+    ├── core/           # Shared utilities, themes, constants
+    ├── domain/         # Core business models and abstractions
+    ├── data/           # Repositories, APIs, local storage implementation
+    ├── application/    # State management, providers, and controllers (Riverpod)
+    ├── presentation/   # Feature-specific UI screens and widgets
+    └── services/       # Native Flutter integration (Hardware & Widgets)
+```
+
+---
+
 ## 🏗️ Architecture Highlights
 
 - **State Management:** Powered by Riverpod (`StateNotifierProvider`).
