@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/fake_call_controller.dart';
+import 'package:rahbar/application/auth/auth_controller.dart';
 import 'package:rahbar/core/theme/app_theme.dart';
 import 'package:rahbar/presentation/settings/development_controls.dart';
+import 'package:rahbar/presentation/profile/profile_screen.dart';
 import 'package:rahbar/presentation/shared/components/premium_header.dart';
 import 'package:rahbar/presentation/shared/widgets/status_chip.dart';
+import 'package:rahbar/application/locale_controller.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isUrdu = ref.watch(localeProvider);
     final bottomPadding = MediaQuery.of(context).padding.bottom + 100.0;
 
     return Scaffold(
@@ -22,11 +26,12 @@ class SettingsScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const PremiumHeader(
-              title: 'Settings & Safety',
+            PremiumHeader(
+              title: AppStrings.get(isUrdu, 'settings'),
               subtitle: 'Manage your safety features and prototype controls',
+              showProfileMenu: true,
               trailing: StatusChip(
-                label: 'System Active',
+                label: AppStrings.get(isUrdu, 'system_active'),
                 type: StatusChipType.safe,
               ),
             ),
@@ -37,13 +42,19 @@ class SettingsScreen extends ConsumerWidget {
                 children: [
                   const SizedBox(height: AppTheme.spacingLarge),
                   
-                  const Text('Safety Features', style: AppTheme.titleStyle),
+                  Text(AppStrings.get(isUrdu, 'account_profile'), style: AppTheme.titleStyle),
+                  const SizedBox(height: AppTheme.spacingMedium),
+                  _buildAccountSection(context, ref, isUrdu),
+
+                  const SizedBox(height: AppTheme.spacingLarge),
+                  
+                  Text(AppStrings.get(isUrdu, 'safety_features'), style: AppTheme.titleStyle),
                   const SizedBox(height: AppTheme.spacingMedium),
                   const FakeCallSection(),
                   
                   const SizedBox(height: AppTheme.spacingXLarge),
                   
-                  const Text('Developer & Prototype Tools', style: AppTheme.titleStyle),
+                  Text(AppStrings.get(isUrdu, 'developer_tools'), style: AppTheme.titleStyle),
                   const SizedBox(height: 4),
                   const Text('For FYP demonstration only', style: AppTheme.captionStyle),
                   const SizedBox(height: AppTheme.spacingMedium),
@@ -66,6 +77,54 @@ class SettingsScreen extends ConsumerWidget {
       ),
     );
   }
+
+  Widget _buildAccountSection(BuildContext context, WidgetRef ref, bool isUrdu) {
+    final authState = ref.watch(authControllerProvider);
+    final profile = authState.profile;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceColor,
+        borderRadius: BorderRadius.circular(AppTheme.cornerRadiusMd),
+        boxShadow: AppTheme.premiumShadow,
+      ),
+      child: Column(
+        children: [
+          if (profile != null) ...[
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingMedium, vertical: 8),
+              leading: CircleAvatar(
+                radius: 24,
+                backgroundColor: AppTheme.lightGreenSurface,
+                child: const Icon(Icons.person, color: AppTheme.pakistanGreen),
+              ),
+              title: Text(profile.fullName ?? 'User Profile', style: AppTheme.bodyStyle.copyWith(fontWeight: FontWeight.bold)),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(profile.username ?? profile.phoneNumber ?? '', style: AppTheme.captionStyle),
+                  const SizedBox(height: 4),
+                  Text('Profile ${profile.completionPercentage}% complete', style: AppTheme.captionStyle.copyWith(color: AppTheme.pakistanGreen, fontWeight: FontWeight.bold, fontSize: 11)),
+                ],
+              ),
+              trailing: const Icon(Icons.chevron_right_rounded, color: AppTheme.textSecondary),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const ProfileScreen()));
+              },
+            ),
+            const Divider(height: 1),
+          ],
+          ListTile(
+            leading: const Icon(Icons.logout, color: AppTheme.errorColor),
+            title: Text(AppStrings.get(isUrdu, 'logout'), style: const TextStyle(color: AppTheme.errorColor, fontWeight: FontWeight.bold)),
+            onTap: () {
+              ref.read(authControllerProvider.notifier).logout();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class FakeCallSection extends ConsumerWidget {
@@ -74,6 +133,7 @@ class FakeCallSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(fakeCallControllerProvider);
+    final isUrdu = ref.watch(localeProvider);
     final themeColor = state.isBlocked ? AppTheme.errorColor : AppTheme.accentBlue;
 
     return Container(
@@ -103,7 +163,7 @@ class FakeCallSection extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Fake Call Protection', style: AppTheme.bodyStyle.copyWith(fontWeight: FontWeight.bold)),
+                      Text(AppStrings.get(isUrdu, 'fake_call_protection'), style: AppTheme.bodyStyle.copyWith(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 2),
                       Text('Attempts Used: ${state.attemptsUsed} / ${FakeCallState.threshold}', style: AppTheme.captionStyle),
                     ],

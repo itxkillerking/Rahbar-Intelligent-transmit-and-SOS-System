@@ -11,6 +11,9 @@ import 'package:rahbar/presentation/shared/components/premium_header.dart';
 import 'package:rahbar/presentation/shared/widgets/status_chip.dart';
 import 'audio_player_screen.dart';
 import 'video_player_screen.dart';
+import 'package:rahbar/presentation/shared/components/authenticated_drawer.dart';
+import 'package:rahbar/presentation/shared/components/rahbar_menu_button.dart';
+import 'package:rahbar/application/locale_controller.dart';
 
 
 
@@ -27,28 +30,44 @@ class _EvidenceScreenState extends ConsumerState<EvidenceScreen> {
   @override
   Widget build(BuildContext context) {
     final emergencyState = ref.watch(emergencyControllerProvider);
+    final isUrdu = ref.watch(localeProvider);
     final isEmergencyActive = emergencyState.activeEmergency != null &&
         emergencyState.activeEmergency!.status != EmergencyStatus.resolved;
 
     final bottomPadding = MediaQuery.of(context).padding.bottom + 100.0;
 
     return Scaffold(
+      drawer: const AuthenticatedDrawer(),
       backgroundColor: AppTheme.backgroundColor,
+      appBar: AppBar(
+        leadingWidth: 100,
+        leading: Row(
+          children: [
+            const SizedBox(width: 8),
+            Builder(
+              builder: (ctx) => RahbarMenuButton(
+                onPressed: () => Scaffold.of(ctx).openDrawer(),
+              ),
+            ),
+            const BackButton(),
+          ],
+        ),
+        title: Text(AppStrings.get(isUrdu, 'evidence')),
+        actions: [
+          StatusChip(
+            label: isEmergencyActive ? 'Recording' : AppStrings.get(isUrdu, 'vault_locked'),
+            type: isEmergencyActive ? StatusChipType.danger : StatusChipType.safe,
+            isAnimated: isEmergencyActive,
+          ),
+          const SizedBox(width: AppTheme.spacingMedium),
+        ],
+      ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.only(bottom: bottomPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            PremiumHeader(
-              title: 'Evidence',
-              subtitle: 'Prototype Evidence Vault',
-              trailing: StatusChip(
-                label: isEmergencyActive ? 'Recording' : 'Vault Locked',
-                type: isEmergencyActive ? StatusChipType.danger : StatusChipType.safe,
-                isAnimated: isEmergencyActive,
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingMedium),
               child: Column(

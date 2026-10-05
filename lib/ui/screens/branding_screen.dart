@@ -44,20 +44,9 @@ class _BrandingScreenState extends State<BrandingScreen> {
             children: [
               const SizedBox(height: 140), // Balancing spacer to perfectly center the icon
               Image.asset(
-                'assets/images/app_icon.png',
-                width: 115,
-                height: 115,
+                'assets/images/logo-bg-free.png',
+                width: 220,
                 fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 32),
-              const Text(
-                'RAHBAR',
-                style: TextStyle(
-                  color: AppTheme.secondaryColor, // Deep Pakistan Green
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.2,
-                ),
               ),
               const SizedBox(height: 24),
               const Padding(

@@ -71,6 +71,7 @@ class RahbarProtectionService : Service() {
             addAction(Intent.ACTION_SCREEN_OFF)
         }
         registerReceiver(detector, filter)
+        Log.d("RAHBAR_TRIGGER", "Receiver registered")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -81,7 +82,10 @@ class RahbarProtectionService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d("RAHBAR_TRIGGER", "RahbarProtectionService destroyed")
-        detector?.let { unregisterReceiver(it) }
+        detector?.let { 
+            unregisterReceiver(it) 
+            Log.d("RAHBAR_TRIGGER", "Receiver unregistered")
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? {

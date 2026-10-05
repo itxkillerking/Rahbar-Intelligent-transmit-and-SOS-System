@@ -90,6 +90,42 @@ Project-RahbAR-FYP/
     ├── application/    # State management, providers, and controllers (Riverpod)
     ├── presentation/   # Feature-specific UI screens and widgets
     └── services/       # Native Flutter integration (Hardware & Widgets)
+
+---
+
+## 🐍 Backend Development
+
+The project now includes an event-driven Python backend located in the `rahbar-backend/` directory.
+
+### Windows Setup
+
+1. **Navigate to the backend folder**:
+   ```bash
+   cd rahbar-backend
+   ```
+2. **Create and activate the virtual environment**:
+   ```powershell
+   py -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+3. **Install dependencies**:
+   ```powershell
+   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
+   ```
+4. **Configuration**:
+   Copy `.env.example` to `.env` and adjust variables. Ensure PostgreSQL (with PostGIS) and Redis are running locally.
+5. **Run migrations**:
+   ```powershell
+   alembic upgrade head
+   ```
+6. **Start the backend**:
+   ```powershell
+   uvicorn app.main:app --reload
+   ```
+7. **Access API Docs & Health**:
+   - Docs: http://127.0.0.1:8000/docs
+   - Health: http://127.0.0.1:8000/api/v1/health
 ```
 
 ---

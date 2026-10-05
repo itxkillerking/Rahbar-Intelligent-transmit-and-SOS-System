@@ -12,9 +12,9 @@ class SideButtonPatternDetector(
 ) : BroadcastReceiver() {
 
     private val TAG = "RAHBAR_TRIGGER"
-    private val requiredTransitions = 4
-    private val maxGapBetweenTransitionsMs = 1500L
-    private val maxGestureWindowMs = 5000L
+    private val requiredTransitions = 2
+    private val maxGapBetweenTransitionsMs = 800L
+    private val maxGestureWindowMs = 1800L
     private val cooldownMs = 10000L
     private val debounceMs = 120L
 
@@ -32,7 +32,7 @@ class SideButtonPatternDetector(
 
         // Check cooldown
         if (now - lastTriggerTime < cooldownMs) {
-            Log.d(TAG, "In cooldown, ignoring")
+            Log.d(TAG, "rejected: cooldown active")
             return
         }
 
@@ -40,42 +40,55 @@ class SideButtonPatternDetector(
         if (transitionTimestamps.isNotEmpty()) {
             val lastTime = transitionTimestamps.last()
             if (now - lastTime < debounceMs) {
-                Log.d(TAG, "Duplicate ignored (debounce)")
+                Log.d(TAG, "rejected: debounce")
                 return
             }
         }
 
         // Ignore duplicate identical states
         if (action == lastState) {
-            Log.d(TAG, "Duplicate ignored (identical state: \$action)")
+            Log.d(TAG, "rejected: duplicate identical state (\$action)")
             return
         }
         lastState = action
         
         val actionName = if (action == Intent.ACTION_SCREEN_ON) "SCREEN_ON" else "SCREEN_OFF"
-        Log.d(TAG, actionName)
+        val pm = context.getSystemService(Context.POWER_SERVICE) as? android.os.PowerManager
+        val isInteractive = pm?.isInteractive ?: false
+        Log.d(TAG, "\$actionName received (isInteractive=\$isInteractive)")
 
         // Check max gap
         if (transitionTimestamps.isNotEmpty() && now - transitionTimestamps.last() > maxGapBetweenTransitionsMs) {
-            Log.d(TAG, "timeout reset (gap too large)")
+            Log.d(TAG, "sequence reset: gap timeout")
             transitionTimestamps.clear()
         }
 
         transitionTimestamps.add(now)
-        Log.d(TAG, "sequence \${transitionTimestamps.size}/\$requiredTransitions")
+        Log.d(TAG, "candidate event detected. sequence count \${transitionTimestamps.size}/\$requiredTransitions")
 
         // Check gesture window
         if (now - transitionTimestamps.first() > maxGestureWindowMs) {
-            Log.d(TAG, "timeout reset (gesture window too long)")
+            Log.d(TAG, "sequence reset: gesture-window timeout")
             transitionTimestamps.clear()
             transitionTimestamps.add(now)
         }
 
         if (transitionTimestamps.size >= requiredTransitions) {
-            Log.d(TAG, "pattern detected")
+            Log.d(TAG, "successful physical-press recognition. final trigger accepted.")
             transitionTimestamps.clear()
             lastState = null
             lastTriggerTime = now
+            
+            // Vibration feedback
+            val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? android.os.Vibrator
+            if (vibrator != null && vibrator.hasVibrator()) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    vibrator.vibrate(android.os.VibrationEffect.createOneShot(50L, android.os.VibrationEffect.DEFAULT_AMPLITUDE))
+                } else {
+                    @Suppress("DEPRECATION")
+                    vibrator.vibrate(50L)
+                }
+            }
             
             Log.d(TAG, "silent danger dispatched")
             onTrigger()

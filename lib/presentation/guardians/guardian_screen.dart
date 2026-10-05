@@ -6,6 +6,7 @@ import '../../domain/models/guardian.dart';
 import 'package:rahbar/core/theme/app_theme.dart';
 import 'package:rahbar/presentation/shared/components/premium_header.dart';
 import 'package:rahbar/presentation/shared/widgets/status_chip.dart';
+import 'package:rahbar/presentation/shared/widgets/status_chip.dart';
 
 class GuardianScreen extends ConsumerWidget {
   const GuardianScreen({Key? key}) : super(key: key);
@@ -25,10 +26,11 @@ class GuardianScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const PremiumHeader(
+                  PremiumHeader(
                     title: 'Family Safety',
                     subtitle: 'Your trusted safety network',
-                    trailing: StatusChip(
+                    showProfileMenu: true,
+                    trailing: const StatusChip(
                       label: 'Safety Network Ready',
                       type: StatusChipType.safe,
                     ),

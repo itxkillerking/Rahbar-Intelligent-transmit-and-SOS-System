@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:rahbar/app/app_shell.dart';
+import 'package:rahbar/app/auth_gate.dart';
 import 'core/theme/app_theme.dart';
 import 'package:rahbar/services/hardware/hardware_emergency_trigger_service.dart';
 import 'package:rahbar/services/widgets/widget_communication_service.dart';
+import 'package:rahbar/application/locale_controller.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -23,16 +24,18 @@ void main() {
   );
 }
 
-class RahbarApp extends StatelessWidget {
+class RahbarApp extends ConsumerWidget {
   const RahbarApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isUrdu = ref.watch(localeProvider);
+    
     return MaterialApp(
       title: 'RAHBAR',
       navigatorKey: globalNavigatorKey,
       theme: AppTheme.lightTheme,
-      home: const AppShell(),
+      home: const AuthGate(),
       debugShowCheckedModeBanner: false,
     );
   }

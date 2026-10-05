@@ -7,6 +7,7 @@ import '../../domain/models/emergency_status.dart';
 import 'package:rahbar/core/theme/app_theme.dart';
 import 'package:rahbar/presentation/shared/components/premium_header.dart';
 import 'package:rahbar/presentation/shared/widgets/status_chip.dart';
+import 'package:rahbar/application/locale_controller.dart';
 
 class TrackingScreen extends ConsumerWidget {
   const TrackingScreen({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class TrackingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emergencyState = ref.watch(emergencyControllerProvider);
     final telemetryState = ref.watch(telemetryControllerProvider);
+    final isUrdu = ref.watch(localeProvider);
     
     final isEmergencyActive = emergencyState.activeEmergency != null &&
         emergencyState.activeEmergency!.status != EmergencyStatus.resolved;
@@ -45,8 +47,9 @@ class TrackingScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             PremiumHeader(
-              title: 'Live Tracking',
+              title: AppStrings.get(isUrdu, 'live_tracking'),
               subtitle: 'Real-time telemetry and location',
+              showProfileMenu: true,
               trailing: StatusChip(
                 label: isEmergencyActive ? 'Active' : 'Standby',
                 type: isEmergencyActive ? StatusChipType.danger : StatusChipType.neutral,
@@ -62,7 +65,7 @@ class TrackingScreen extends ConsumerWidget {
                   _buildMapMock(isEmergencyActive),
                   const SizedBox(height: AppTheme.spacingXLarge),
                   
-                  const Text('Live Telemetry', style: AppTheme.titleStyle),
+                  Text(AppStrings.get(isUrdu, 'live_telemetry'), style: AppTheme.titleStyle),
                   const SizedBox(height: AppTheme.spacingMedium),
                   
                   _buildTelemetryCard(
