@@ -23,7 +23,7 @@ class UnconfiguredSmsService(SmsService):
         raise OtpDeliveryError("SMS provider not configured")
 
 def get_sms_service() -> SmsService:
-    if settings.APP_ENV == "development" and settings.SMS_PROVIDER == "dev":
+    if settings.APP_ENV.strip() in ["development", "staging"] and settings.SMS_PROVIDER.strip() == "dev":
         from app.infrastructure.sms.dev import LocalDevSmsService
         return LocalDevSmsService()
     return UnconfiguredSmsService()
