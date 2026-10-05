@@ -24,6 +24,6 @@ class LocalDevSmsService(SmsService):
         return True
 
     async def send_emergency_message(self, phone_number: str, message: str) -> bool:
-        if settings.APP_ENV not in ["development", "staging"] or settings.SMS_PROVIDER != "dev":
+        if settings.APP_ENV.strip() not in ["development", "staging"] or settings.SMS_PROVIDER.strip() != "dev":
             raise OtpDeliveryError("LocalDevSmsService is not permitted in current configuration.")
         return True
